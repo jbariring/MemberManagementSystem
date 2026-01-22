@@ -1,4 +1,4 @@
-﻿namespace MemberManagement.Domain
+﻿namespace DBContext
 {
     public class Class1
     {
