@@ -2,6 +2,8 @@ using MemberManagement.Domain.Interfaces;
 using MemberManagement.Infrastructure;
 using MemberManagement.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using MemberManagement.Application.Services;
+
 
 namespace MemberManagement.Web
 {
@@ -21,6 +23,9 @@ namespace MemberManagement.Web
 
             //Add Dependency Injection
             builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+            builder.Services.AddScoped<IMemberService, MemberService>();
+
+
 
             var app = builder.Build();
 

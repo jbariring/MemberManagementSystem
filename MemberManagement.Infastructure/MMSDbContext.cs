@@ -3,13 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MemberManagement.Infrastructure
 {
-    public class MMSDbContext : DbContext
+    public class MMSDbContext(DbContextOptions<MMSDbContext> options) : DbContext(options)
     {
-        public MMSDbContext(DbContextOptions<MMSDbContext> options)
-            : base(options)
-        {
-        }
-
         public DbSet<Member> Members { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
