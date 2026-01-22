@@ -1,4 +1,4 @@
-﻿using MemberManagement.Domain;
+﻿using MemberManagement.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace MemberManagement.Infrastructure

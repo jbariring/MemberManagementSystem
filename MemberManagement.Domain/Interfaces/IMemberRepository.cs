@@ -1,6 +1,6 @@
-﻿
+﻿using MemberManagement.Domain.Entities;
 
-namespace MemberManagement.Domain
+namespace MemberManagement.Domain.Interfaces
 {
     public interface IMemberRepository
     {

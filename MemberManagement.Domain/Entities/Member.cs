@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices.Marshalling;
 
-namespace MemberManagement.Domain
+namespace MemberManagement.Domain.Entities
 {
     public class Member
     {
