@@ -29,6 +29,8 @@ namespace MemberManagement.Web
 
             var app = builder.Build();
 
+
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -45,10 +47,8 @@ namespace MemberManagement.Web
             app.UseAuthorization();
 
             app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-
-            app.Run();
+            name: "default",
+            pattern: "{controller=Member}/{action=MemberListPage}/{id?}"); app.Run();
 
         }
     }

@@ -8,6 +8,7 @@ namespace MemberManagement.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger = logger;
 
+
         public IActionResult Index()
         {
             return View();
@@ -23,5 +24,6 @@ namespace MemberManagement.Web.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

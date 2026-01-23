@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MemberManagement.Web.Models
+namespace MemberManagement.Web.ViewModels
 {
     public class MemberVM
     {
@@ -28,4 +28,4 @@ namespace MemberManagement.Web.Models
 
     }
 }
-}
+
