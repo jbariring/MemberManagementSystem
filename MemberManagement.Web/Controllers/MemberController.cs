@@ -15,5 +15,15 @@ namespace MemberManagement.Web.Controllers
         {
             return View();
         }
+        public IActionResult Create(MemberVM model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            // Save to database
+
+            return RedirectToAction("MemberListPage");
+        }
     }
 }
+
