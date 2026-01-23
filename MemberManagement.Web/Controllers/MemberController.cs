@@ -17,6 +17,7 @@ namespace MemberManagement.Web.Controllers
         public IActionResult MemberListPage()
         {
             var members = _context.Members
+                .Where(m => m.IsActive == true)
                 .Select(m => new MemberVM
                 {
                     MemberID = m.MemberID,
@@ -62,7 +63,6 @@ namespace MemberManagement.Web.Controllers
 
             _context.Members.Add(member);
             _context.SaveChanges();
-
             return RedirectToAction("MemberListPage");
         }
 
@@ -114,9 +114,61 @@ namespace MemberManagement.Web.Controllers
             return RedirectToAction("MemberListPage");
         }
 
+        [HttpGet] //Detailed View
+        public IActionResult Details(int id)
+        {
+            var member = _context.Members.Find(id);
 
+            if (member == null)
+                return NotFound();
 
+            var model = new MemberVM
+            {
+                MemberID = member.MemberID,
+                FirstName = member.FirstName,
+                LastName = member.LastName,
+                BirthDate = member.BirthDate,
+                Address = member.Address,
+                Branch = member.Branch,
+                ContactNo = member.ContactNo,
+                Email = member.Email,
+                IsActive = member.IsActive,
+                DateCreated = member.DateCreated
+            };
 
+            return View(model);
+        }
+        [HttpGet] //Delete Confirmation View
+        public IActionResult Delete(int id)
+        {
+            var member = _context.Members.Find(id);
+            if (member == null) return NotFound();
 
+            var model = new MemberVM
+            {
+                MemberID = member.MemberID,
+                FirstName = member.FirstName,
+                LastName = member.LastName,
+                Email = member.Email
+            };
+
+            return View(model);
+        }
+
+        [HttpPost] //Delete Action
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int memberId)
+        {
+            var member = _context.Members.Find(memberId);
+            if (member == null) return NotFound();
+
+            member.IsActive = false;
+            _context.SaveChanges();
+
+            // DEBUG
+            Console.WriteLine("Deactivated member " + memberId);
+
+            return RedirectToAction(nameof(MemberListPage));
+        }
     }
 }

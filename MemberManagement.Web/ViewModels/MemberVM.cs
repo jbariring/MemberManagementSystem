@@ -16,6 +16,8 @@ namespace MemberManagement.Web.ViewModels
         [Required(ErrorMessage = "Last Name is required")]
         public string LastName { get; set; }
 
+        [Required(ErrorMessage = "Birth Date is required")]
+        [DataType(DataType.Date)]
         [BirthDateNotInFuture(ErrorMessage = "Birth Date cannot be in the future")]
         public DateTime? BirthDate { get; set; }
         public string Address { get; set; }

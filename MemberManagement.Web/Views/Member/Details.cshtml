@@ -1,0 +1,39 @@
+﻿@model MemberManagement.Web.ViewModels.MemberVM
+
+<h2>Member Details</h2>
+
+<div>
+    <dl>
+        <dt>Member ID</dt>
+        <dd>@Model.MemberID</dd>
+
+        <dt>First Name</dt>
+        <dd>@Model.FirstName</dd>
+
+        <dt>Last Name</dt>
+        <dd>@Model.LastName</dd>
+
+        <dt>Birth Date</dt>
+        <dd>@Model.BirthDate?.ToString("yyyy-MM-dd")</dd>
+
+        <dt>Address</dt>
+        <dd>@Model.Address</dd>
+
+        <dt>Branch</dt>
+        <dd>@Model.Branch</dd>
+
+        <dt>Contact No</dt>
+        <dd>@Model.ContactNo</dd>
+
+        <dt>Email</dt>
+        <dd>@Model.Email</dd>
+
+        <dt>Status</dt>
+        <dd>@(Model.IsActive ? "Active" : "Inactive")</dd>
+
+        <dt>Date Created</dt>
+        <dd>@Model.DateCreated.ToString("yyyy-MM-dd")</dd>
+    </dl>
+</div>
+
+<a asp-action="MemberListPage">Back to List</a>
