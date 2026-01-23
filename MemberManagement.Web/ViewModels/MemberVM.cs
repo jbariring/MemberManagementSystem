@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MemberManagement.Application.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace MemberManagement.Web.ViewModels
 {
@@ -16,7 +17,7 @@ namespace MemberManagement.Web.ViewModels
         public string LastName { get; set; }
 
         [BirthDateNotInFuture(ErrorMessage = "Birth Date cannot be in the future")]
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
         public string Address { get; set; }
         public string Branch { get; set; }
 

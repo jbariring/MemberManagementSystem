@@ -1,0 +1,57 @@
+﻿@model MemberManagement.Web.ViewModels.MemberVM
+
+<h2>Edit Member</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="MemberID" />
+
+    <div>
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" />
+        <span asp-validation-for="FirstName"></span>
+    </div>
+
+    <div>
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" />
+        <span asp-validation-for="LastName"></span>
+    </div>
+
+    <div>
+        <label asp-for="BirthDate"></label>
+        <input asp-for="BirthDate" type="date" />
+    </div>
+
+    <div>
+        <label asp-for="Address"></label>
+        <input asp-for="Address" />
+    </div>
+
+    <div>
+        <label asp-for="Branch"></label>
+        <input asp-for="Branch" />
+    </div>
+
+    <div>
+        <label asp-for="ContactNo"></label>
+        <input asp-for="ContactNo" />
+    </div>
+
+    <div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+    </div>
+
+    <div>
+        <label asp-for="IsActive"></label>
+        <input asp-for="IsActive" type="checkbox" />
+    </div>
+
+    <button type="submit">Save Changes</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
