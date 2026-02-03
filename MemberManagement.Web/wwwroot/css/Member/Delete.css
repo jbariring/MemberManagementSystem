@@ -1,0 +1,132 @@
+﻿/* Delete */
+.delete-container {
+    max-width: 500px;
+    margin: 250px auto;
+    padding: 10px 50px 20px;
+    background: #e3efe8;
+    border-radius: 40px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.08);
+    height: auto;
+}
+
+    .delete-container form {
+        margin: 0 auto;
+        padding: 15px 30px;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .delete-container .header-frame {
+        margin-bottom: 10px;
+    }
+
+
+/*.header-frame {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 2px solid #4caf50;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 25px;
+    background: #f1f8f4;
+}
+
+.header-icon {
+    font-size: 22px;
+    color: #4caf50;
+}
+
+.header-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2f7d32;
+    letter-spacing: 1px;
+}
+
+.sub-header {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4a7a4f;
+    margin-top: 4px;
+}*/
+
+.warning-box {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: 1px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    color: #856404;
+}
+
+.warning-icon {
+    font-size: 18px;
+}
+
+.details-card {
+    background: #ffffff;
+    border: 1px solid #d9ead3;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.card-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 12px;
+    padding: 8px 0;
+}
+
+.card-label {
+    font-weight: 700;
+    color: #2f7d32;
+}
+
+.card-value {
+    color: #333;
+    background: #f7fbf8;
+    border-radius: 10px;
+    padding: 8px 12px;
+}
+
+/*.button-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}*/
+
+.btn-deactivate,
+.btn-cancel {
+    padding: 10px 24px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+}
+
+.btn-deactivate {
+    background: #d32f2f;
+    color: #fff;
+}
+
+    .btn-deactivate:hover {
+        background: #b71c1c;
+    }
+
+/*.btn-cancel {
+    background: #e0e0e0;
+    color: #333;
+}
+
+    .btn-cancel:hover {
+        background: #c8e6c9;*/
+
+
+
+

@@ -2,6 +2,7 @@
 using MemberManagement.Infrastructure;
 using MemberManagement.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MemberManagement.Web.Controllers
 {
@@ -13,11 +14,24 @@ namespace MemberManagement.Web.Controllers
         {
             _context = context;
         }
-
-        public IActionResult MemberListPage()
+        public IActionResult MemberListPage(string searchLastName, string branch, int pageNumber = 1, int pageSize = 5)
         {
-            var members = _context.Members
-                .Where(m => m.IsActive == true)
+            var query = _context.Members
+                .Where(m => m.IsActive)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchLastName))
+                query = query.Where(m => m.LastName.ToLower().Contains(searchLastName.ToLower()));
+
+            if (!string.IsNullOrEmpty(branch))
+                query = query.Where(m => m.Branch == branch);
+
+            int totalMembers = query.Count();
+
+            var members = query
+                .OrderBy(m => m.MemberID)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .Select(m => new MemberVM
                 {
                     MemberID = m.MemberID,
@@ -33,8 +47,31 @@ namespace MemberManagement.Web.Controllers
                 })
                 .ToList();
 
-            return View(members);
+            var branches = _context.Members
+                .Where(m => m.IsActive)
+                .Select(m => m.Branch)
+                .Distinct()
+                .ToList();
+
+            var vm = new MemberListVM
+            {
+                Members = members,
+                SearchLastName = searchLastName,
+                Branch = branch,
+
+                Branches = new SelectList(branches, branch), // ✔️ Correct
+
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Ceiling((double)totalMembers / pageSize)
+            };
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                return PartialView("_MemberListPartial", vm);
+
+            return View(vm);
         }
+
 
         [HttpGet]
         public IActionResult Create()
@@ -57,7 +94,7 @@ namespace MemberManagement.Web.Controllers
                 Branch = model.Branch,
                 ContactNo = model.ContactNo,
                 Email = model.Email,
-                IsActive = model.IsActive,
+                IsActive = true,
                 DateCreated = DateTime.Now
             };
 
@@ -107,7 +144,9 @@ namespace MemberManagement.Web.Controllers
             member.Branch = model.Branch;
             member.ContactNo = model.ContactNo;
             member.Email = model.Email;
-            member.IsActive = model.IsActive;
+
+            // IMPORTANT: do not change IsActive here
+            // member.IsActive = false;
 
             _context.SaveChanges();
 

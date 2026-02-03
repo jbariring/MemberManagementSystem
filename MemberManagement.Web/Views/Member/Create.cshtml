@@ -1,59 +1,68 @@
 ﻿@model MemberManagement.Web.ViewModels.MemberVM
+<link rel="stylesheet" href="~/css/member/Create.css" />
 
-<h2>Create Member</h2>
 
-<form asp-action="Create" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="create-page">
+    <div class="create-container">
+        <div class="header-frame">
+            <i class="header-icon fa fa-users"></i>
+            <div class="header-text">Create Member</div>
+        </div>
 
-    <div>
-        <label asp-for="FirstName"></label>
-        <input asp-for="FirstName" />
-        <span asp-validation-for="FirstName" class="text-danger"></span>
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Form fields -->
+            <div class="form-group">
+                <i class="fa fa-user"></i>
+                <input asp-for="FirstName" placeholder=" " />
+                <label asp-for="FirstName"></label>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <i class="fa fa-user"></i>
+                <input asp-for="LastName" placeholder=" " />
+                <label asp-for="LastName"></label>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <i class="fa fa-calendar"></i>
+                <input asp-for="BirthDate" type="date" placeholder=" " />
+                <label asp-for="BirthDate"></label>
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <i class="fa fa-home"></i>
+                <input asp-for="Address" placeholder=" " />
+                <label asp-for="Address"></label>
+            </div>
+
+            <div class="form-group">
+                <i class="fa fa-building"></i>
+                <input asp-for="Branch" placeholder=" " />
+                <label asp-for="Branch"></label>
+            </div>
+
+            <div class="form-group">
+                <i class="fa fa-phone"></i>
+                <input asp-for="ContactNo" placeholder=" " />
+                <label asp-for="ContactNo"></label>
+            </div>
+
+            <div class="form-group">
+                <i class="fa fa-envelope"></i>
+                <input asp-for="Email" type="email" placeholder=" " />
+                <label asp-for="Email"></label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="button-row">
+                <button class="btn-save" type="submit">Save</button>
+                <a class="btn-cancel" asp-action="MemberListPage">Cancel</a>
+            </div>
+        </form>
     </div>
-
-    <div>
-        <label asp-for="LastName"></label>
-        <input asp-for="LastName" />
-        <span asp-validation-for="LastName" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label asp-for="BirthDate"></label>
-        <input asp-for="BirthDate" type="date" />
-        <span asp-validation-for="BirthDate" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label asp-for="Address"></label>
-        <input asp-for="Address" />
-    </div>
-
-    <div>
-        <label asp-for="Branch"></label>
-        <input asp-for="Branch" />
-    </div>
-
-    <div>
-        <label asp-for="ContactNo"></label>
-        <input asp-for="ContactNo" />
-    </div>
-
-    <div>
-        <label asp-for="Email"></label>
-        <input asp-for="Email" type="email" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label asp-for="IsActive"></label>
-        <input asp-for="IsActive" type="checkbox" />
-    </div>
-
-    <button type="submit">Save</button>
-</form>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+</div>

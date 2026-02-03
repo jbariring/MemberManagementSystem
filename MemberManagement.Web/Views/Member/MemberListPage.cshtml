@@ -1,57 +1,45 @@
-﻿@model IEnumerable<MemberManagement.Web.ViewModels.MemberVM>
+﻿@model MemberManagement.Web.ViewModels.MemberListVM
 
-@{
-    ViewData["Title"] = "Member List";
-}
+<link rel="stylesheet" href="~/css/member/MemberList.css" />
 
-<h2>Member List</h2>
+<div class="list-container">
 
-<a asp-action="Create" class="btn btn-primary mb-3">Create New Member</a>
+    <div class="header-frame">
+        <i class="header-icon fa fa-users"></i>
+        <div class="header-text">Member List</div>
+    </div>
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Member ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Birth Date</th>
-            <th>Address</th>
-            <th>Branch</th>
-            <th>Contact No</th>
-            <th>Email</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null && Model.Any())
-        {
-            foreach (var member in Model)
-            {
-                <tr>
-                    <td>@member.MemberID</td>
-                    <td>@member.FirstName</td>
-                    <td>@member.LastName</td>
-                    <td>@member.BirthDate?.ToString("yyyy-MM-dd")</td>
-                    <td>@member.Address</td>
-                    <td>@member.Branch</td>
-                    <td>@member.ContactNo</td>
-                    <td>@member.Email</td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@member.MemberID">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@member.MemberID">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@member.MemberID">Delete</a>
+    <div class="top-row">
+        <form id="searchForm" method="get" class="search-form">
+            <input id="searchLastName" name="searchLastName" class="search-input"
+                   value="@Model.SearchLastName"
+                   placeholder="Search by Last Name..." />
 
-                    </td>
-                </tr>
-            }
-        }
-        else
-        {
-            <tr>
-                <td colspan="11" class="text-center text-muted">
-                    No members found.
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+            <select id="branch" asp-for="Branch" asp-items="Model.Branches">
+                <option value="">All Branches</option>
+            </select>
+
+            <button class="btn-search" type="button" onclick="loadMembers(1)">Search</button>
+        </form>
+
+        <a asp-action="Create" class="btn-create">Create New Member</a>
+    </div>
+
+    <!-- Only this container -->
+    <div id="memberList">
+        @await Html.PartialAsync("Index", Model)
+    </div>
+</div>
+
+<script>
+    function loadMembers(pageNumber) {
+        const searchLastName = document.getElementById("searchLastName").value;
+        const branch = document.getElementById("branch").value;
+
+        fetch(`/Member/MemberListPage?searchLastName=${searchLastName}&branch=${branch}&pageNumber=${pageNumber}`)
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("memberList").innerHTML = html;
+            });
+    }
+</script>

@@ -1,39 +1,71 @@
 ﻿@model MemberManagement.Web.ViewModels.MemberVM
+<link rel="stylesheet" href="~/css/member/Details.css" />
+@{
+    ViewData["Title"] = "Member Details";
+}
 
-<h2>Member Details</h2>
+<div class="details-container">
+    <div class="details-box">
+        <h2 style="text-align:center; margin-bottom:25px;">Member Details</h2>
 
-<div>
-    <dl>
-        <dt>Member ID</dt>
-        <dd>@Model.MemberID</dd>
+        <dl class="details-list">
 
-        <dt>First Name</dt>
-        <dd>@Model.FirstName</dd>
+            <div class="detail-row">
+                <dt>Member ID</dt>
+                <dd>@Model.MemberID</dd>
+            </div>
 
-        <dt>Last Name</dt>
-        <dd>@Model.LastName</dd>
+            <div class="detail-row">
+                <dt>First Name</dt>
+                <dd>@Model.FirstName</dd>
+            </div>
 
-        <dt>Birth Date</dt>
-        <dd>@Model.BirthDate?.ToString("yyyy-MM-dd")</dd>
+            <div class="detail-row">
+                <dt>Last Name</dt>
+                <dd>@Model.LastName</dd>
+            </div>
 
-        <dt>Address</dt>
-        <dd>@Model.Address</dd>
+            <div class="detail-row">
+                <dt>Birth Date</dt>
+                <dd>@Model.BirthDate?.ToString("yyyy-MM-dd")</dd>
+            </div>
 
-        <dt>Branch</dt>
-        <dd>@Model.Branch</dd>
+            <div class="detail-row">
+                <dt>Address</dt>
+                <dd>@Model.Address</dd>
+            </div>
 
-        <dt>Contact No</dt>
-        <dd>@Model.ContactNo</dd>
+            <div class="detail-row">
+                <dt>Branch</dt>
+                <dd>@Model.Branch</dd>
+            </div>
 
-        <dt>Email</dt>
-        <dd>@Model.Email</dd>
+            <div class="detail-row">
+                <dt>Contact No</dt>
+                <dd>@Model.ContactNo</dd>
+            </div>
 
-        <dt>Status</dt>
-        <dd>@(Model.IsActive ? "Active" : "Inactive")</dd>
+            <div class="detail-row">
+                <dt>Email</dt>
+                <dd>@Model.Email</dd>
+            </div>
 
-        <dt>Date Created</dt>
-        <dd>@Model.DateCreated.ToString("yyyy-MM-dd")</dd>
-    </dl>
+            <div class="detail-row">
+                <dt>Status</dt>
+                <dd>@(Model.IsActive ? "Active" : "Inactive")</dd>
+            </div>
+
+            <div class="detail-row">
+                <dt>Date Created</dt>
+                <dd>@Model.DateCreated.ToString("yyyy-MM-dd")</dd>
+            </div>
+
+        </dl>
+
+        <div style="text-align:center; margin-top:30px;">
+            <a asp-action="MemberListPage" class="btn btn-secondary">
+                Back to List
+            </a>
+        </div>
+    </div>
 </div>
-
-<a asp-action="MemberListPage">Back to List</a>

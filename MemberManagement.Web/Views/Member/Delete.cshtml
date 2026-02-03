@@ -1,34 +1,57 @@
 ﻿@model MemberManagement.Web.ViewModels.MemberVM
+<link rel="stylesheet" href="~/css/member/Delete.css" />
 
 @{
     ViewData["Title"] = "Delete Member";
 }
 
-<h2>Delete Member</h2>
+<div class="delete-container">
 
-<div class="alert alert-warning">
-    <strong>Warning!</strong>
-    This action will deactivate the member (soft delete).
-</div>
-
-<div class="card">
-    <div class="card-body">
-        <p><strong>Member ID:</strong> @Model.MemberID</p>
-        <p><strong>Name:</strong> @Model.FirstName @Model.LastName</p>
-        <p><strong>Email:</strong> @Model.Email</p>
+    <div class="header-frame">
+        <h2>Deactivate Member</h2>
     </div>
+
+    <div class="warning-box">
+        <span class="warning-icon">⚠</span>
+        <div>
+            <strong>Warning!</strong><br />
+            This action will deactivate the member (soft delete).
+        </div>
+    </div>
+
+    <div class="details-card">
+        <div class="card-row">
+            <div class="card-label">Member ID</div>
+            <div class="card-value">@Model.MemberID</div>
+        </div>
+
+        <div class="card-row">
+            <div class="card-label">Name</div>
+            <div class="card-value">
+                @Model.FirstName @Model.LastName
+            </div>
+        </div>
+
+        <div class="card-row">
+            <div class="card-label">Email</div>
+            <div class="card-value">@Model.Email</div>
+        </div>
+    </div>
+
+    <form asp-action="DeleteConfirmed" method="post">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" name="memberId" value="@Model.MemberID" />
+
+        <div class="button-row">
+            <button type="submit" class="btn-deactivate">
+                Yes, Deactivate
+            </button>
+
+            <a asp-action="MemberListPage" class="btn-cancel">
+                Cancel
+            </a>
+        </div>
+    </form>
+
 </div>
-
-<form asp-action="DeleteConfirmed" method="post" class="mt-3">
-    @Html.AntiForgeryToken()
-
-    <input type="hidden" name="memberId" value="@Model.MemberID" />
-
-    <button type="submit" class="btn btn-danger">
-        Yes, Deactivate
-    </button>
-
-    <a asp-action="MemberListPage" class="btn btn-secondary">
-        Cancel
-    </a>
-</form>
