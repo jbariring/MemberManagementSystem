@@ -11,35 +11,48 @@
 
     <div class="top-row">
         <form id="searchForm" method="get" class="search-form">
-            <input id="searchLastName" name="searchLastName" class="search-input"
+
+            <!-- Search by last name -->
+            <input id="searchLastName"
+                   name="searchLastName"
+                   class="search-input"
                    value="@Model.SearchLastName"
                    placeholder="Search by Last Name..." />
 
+            <!-- Branch filter -->
             <select id="branch" asp-for="Branch" asp-items="Model.Branches">
                 <option value="">All Branches</option>
             </select>
 
-            <button class="btn-search" type="button" onclick="loadMembers(1)">Search</button>
+            <!-- Search button reloads page 1 -->
+            <button class="btn-search" type="button" onclick="loadMembers(1)">
+                Search
+            </button>
         </form>
 
         <a asp-action="Create" class="btn-create">Create New Member</a>
     </div>
 
-    <!-- Only this container -->
+    <!-- AJAX-loaded table + footer -->
     <div id="memberList">
-        @await Html.PartialAsync("Index", Model)
+        @await Html.PartialAsync("MemberTable", Model)
     </div>
 </div>
 
 <script>
-    function loadMembers(pageNumber) {
+    function loadMembers(pageNumber, pageSizeOverride) {
         const searchLastName = document.getElementById("searchLastName").value;
         const branch = document.getElementById("branch").value;
 
-        fetch(`/Member/MemberListPage?searchLastName=${searchLastName}&branch=${branch}&pageNumber=${pageNumber}`)
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById("memberList").innerHTML = html;
-            });
+        // pageSize comes from footer dropdown when provided
+        const pageSize = pageSizeOverride ?? @Model.PageSize;
+
+        fetch(`/Member/MemberListPage?searchLastName=${searchLastName}&branch=${branch}&pageNumber=${pageNumber}&pageSize=${pageSize}`, {
+            headers: { "X-Requested-With": "XMLHttpRequest" }
+        })
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById("memberList").innerHTML = html;
+        });
     }
 </script>

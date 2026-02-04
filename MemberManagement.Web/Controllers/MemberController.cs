@@ -3,6 +3,8 @@ using MemberManagement.Infrastructure;
 using MemberManagement.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
+
 
 namespace MemberManagement.Web.Controllers
 {
@@ -27,6 +29,14 @@ namespace MemberManagement.Web.Controllers
                 query = query.Where(m => m.Branch == branch);
 
             int totalMembers = query.Count();
+            int startItem = totalMembers == 0
+    ? 0
+            : ((pageNumber - 1) * pageSize) + 1;
+
+            int endItem = totalMembers == 0
+                ? 0
+                : Math.Min(pageNumber * pageSize, totalMembers);
+
 
             var members = query
                 .OrderBy(m => m.MemberID)
@@ -59,15 +69,21 @@ namespace MemberManagement.Web.Controllers
                 SearchLastName = searchLastName,
                 Branch = branch,
 
-                Branches = new SelectList(branches, branch), // ✔️ Correct
+                Branches = new SelectList(branches, branch),
 
                 PageNumber = pageNumber,
                 PageSize = pageSize,
-                TotalPages = (int)Math.Ceiling((double)totalMembers / pageSize)
+                TotalPages = (int)Math.Ceiling((double)totalMembers / pageSize),
+
+                // 🔥 REQUIRED FOR PAGINATION UI
+                TotalMembers = totalMembers,
+                StartItem = startItem,
+                EndItem = endItem
             };
 
+
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
-                return PartialView("_MemberListPartial", vm);
+                return PartialView("MemberTable", vm);
 
             return View(vm);
         }
@@ -83,7 +99,7 @@ namespace MemberManagement.Web.Controllers
         public IActionResult Create(MemberVM model)
         {
             if (!ModelState.IsValid)
-                return View(model);
+                return View(model); // prevents saving if BirthDate is in the future
 
             var member = new Member
             {
@@ -102,6 +118,7 @@ namespace MemberManagement.Web.Controllers
             _context.SaveChanges();
             return RedirectToAction("MemberListPage");
         }
+
 
         [HttpGet] //Loads Record
         public IActionResult Edit(int id)

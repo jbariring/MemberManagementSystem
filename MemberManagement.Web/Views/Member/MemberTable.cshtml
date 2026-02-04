@@ -1,0 +1,94 @@
+﻿@model MemberManagement.Web.ViewModels.MemberListVM
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<div class="table-wrapper">
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Member ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Birth Date</th>
+                <th>Address</th>
+                <th>Branch</th>
+                <th>Contact No</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Members != null && Model.Members.Any())
+            {
+                foreach (var member in Model.Members)
+                {
+                    <tr>
+                        <td>@member.MemberID</td>
+                        <td>@member.FirstName</td>
+                        <td>@member.LastName</td>
+                        <td>@member.BirthDate?.ToString("yyyy-MM-dd")</td>
+                        <td>@member.Address</td>
+                        <td>@member.Branch</td>
+                        <td>@member.ContactNo</td>
+                        <td>@member.Email</td>
+                        <td class="actions">
+                        <td class="actions">
+                            <a asp-action="Edit" asp-route-id="@member.MemberID" class="action-icon" title="Edit">
+                                <i class="fa fa-pencil-alt"></i>
+                            </a>
+                            <a asp-action="Details" asp-route-id="@member.MemberID" class="action-icon" title="Details">
+                                <i class="fa fa-info-circle"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@member.MemberID" class="action-icon" title="Delete">
+                                <i class="fa fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="9" class="no-data">No members found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- FOOTER -->
+<div class="d-flex justify-content-between align-items-center mt-2 pagination-bar">
+
+    <!-- LEFT: page size dropdown -->
+    <select class="page-size" onchange="loadMembers(1, this.value)">
+        <option value="5" selected="@(Model.PageSize == 5)">5</option>
+        <option value="10" selected="@(Model.PageSize == 10)">10</option>
+        <option value="15" selected="@(Model.PageSize == 15)">15</option>
+    </select>
+
+    <!-- CENTER: page buttons -->
+    <div class="page-buttons">
+        <button class="page-btn" @(Model.PageNumber == 1 ? "disabled" : "")
+                onclick="loadMembers(@(Model.PageNumber - 1), @Model.PageSize)">
+            Prev
+        </button>
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <button class="page-btn @(i == Model.PageNumber ? "active" : "")"
+                    onclick="loadMembers(@i, @Model.PageSize)">
+                @i
+            </button>
+        }
+
+        <button class="page-btn" @(Model.PageNumber == Model.TotalPages ? "disabled" : "")
+                onclick="loadMembers(@(Model.PageNumber + 1), @Model.PageSize)">
+            Next
+        </button>
+    </div>
+
+    <!-- RIGHT: record info -->
+    <span class="record-info">
+        Showing @Model.StartItem – @Model.EndItem of @Model.TotalMembers
+    </span>
+
+</div>

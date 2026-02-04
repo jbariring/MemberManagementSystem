@@ -14,5 +14,11 @@ namespace MemberManagement.Web.ViewModels
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public int TotalPages { get; set; }
+
+        public int TotalMembers { get; set; }
+        public int StartItem { get; set; }
+        public int EndItem { get; set; }
+
+
     }
 }

@@ -7,24 +7,36 @@ namespace MemberManagement.Application.Validation
     {
         public override bool IsValid(object value)
         {
-            if (value == null)
+            if (value == null) // optional field
                 return true;
 
-            DateTime birthDate = (DateTime)value;
-            return birthDate <= DateTime.Now;
+            if (value is DateTime date)
+            {
+                if (date == DateTime.MinValue) // ignore empty input
+                    return true;
+
+                return date <= DateTime.Today; // must not be future
+            }
+
+            return false;
+        }
+
+
+        public class MemberValidation
+        {
+            [Required(ErrorMessage = "First Name is required")]
+            public string FirstName { get; set; }
+
+            [Required(ErrorMessage = "Last Name is required")]
+            public string LastName { get; set; }
+
+            [BirthDateNotInFuture(ErrorMessage = "Birth Date cannot be in the future")]
+            public DateTime? BirthDate { get; set; }
+
         }
     }
-
-    public class MemberValidation
-    {
-        [Required(ErrorMessage = "First Name is required")]
-        public string FirstName { get; set; }
-
-        [Required(ErrorMessage = "Last Name is required")]
-        public string LastName { get; set; }
-
-        [Required(ErrorMessage = "Birth Date is required")]
-        [BirthDateNotInFuture(ErrorMessage = "Birth Date cannot be in the future")]
-        public DateTime? BirthDate { get; set; }
-    }
 }
+
+
+
+

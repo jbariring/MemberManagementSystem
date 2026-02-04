@@ -1,12 +1,12 @@
 ﻿/* Member List */
 .list-container {
-    max-width: 1200px;
+    max-width: 1500px;
     margin: 40px auto;
-    padding: 25px;
+    padding: 30px;
     background: #e3efe8;
-    border-radius: 14px;
+    border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    font-family: "Segoe UI", sans-serif;
+    font-family: "Georgia", Serif;
 }
 
 .header-frame {
@@ -18,13 +18,13 @@
 
 .header-icon {
     font-size: 22px;
-    color: #4caf50;
+    color: forestgreen;
 }
 
 .header-text {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
-    color: #4caf50;
+    color: forestgreen;
     letter-spacing: 1px;
 }
 
@@ -42,13 +42,13 @@
 
 .search-input {
     padding: 8px;
-    width: 200px;
+    width: 150px;
     border-radius: 6px;
     border: 1px solid #b7d7be;
 }
 
 .btn-search {
-    padding: 8px 12px;
+    padding: 10px 30px;
     border-radius: 6px;
     background: #4caf50;
     color: #fff;
@@ -85,41 +85,55 @@
 }
 
     .styled-table thead th {
-        background: #f1f8f4;
-        color: #2f7d32;
-        font-weight: 700;
-        padding: 12px;
+        background: #A1BC98;
+        color: #333;
+        font-weight: 50;
+        padding: 10px;
         text-align: left;
     }
 
     .styled-table tbody td {
         padding: 11px;
-        border-bottom: 1px solid #e0e0e0;
+        border-bottom: none;
+        font-weight: 10;
+        padding: 2px;
         color: #333;
     }
 
     .styled-table tbody tr:hover {
-        background: #f7fbf8;
+        outline: 1px solid #A1BC98; /* Outline color and thickness */
+        outline-offset: -3px; /* Optional: makes the outline snug around the row */
+        background: none; /* Ensure background stays unchanged */
     }
+
 
 .actions {
     display: flex;
-    gap: 12px;
+    gap: 1px;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap; /* prevents wrapping into multiple lines */
 }
 
-.action-link {
+.action-icon {
     color: #4caf50;
+    font-size: 16px;
     text-decoration: none;
-    font-size: 14px;
+    padding: 5px;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
 }
 
-    .action-link:hover {
-        color: #2f7d32;
-    }
 
 .no-data {
     text-align: center;
     padding: 20px;
     color: #777;
     font-style: italic;
+}
+
+.result-count {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #555;
 }
