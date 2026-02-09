@@ -4,6 +4,7 @@ using MemberManagement.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MemberManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(MMSDbContext))]
-    partial class MMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260209080436_AddAppUserEntity")]
+    partial class AddAppUserEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,14 +34,10 @@ namespace MemberManagement.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"));
 
                     b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -53,16 +52,6 @@ namespace MemberManagement.Infrastructure.Migrations
                     b.HasKey("UserID");
 
                     b.ToTable("AppUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            UserID = 1,
-                            DateCreated = new DateTime(2026, 2, 9, 16, 32, 41, 749, DateTimeKind.Local).AddTicks(5420),
-                            IsActive = true,
-                            PasswordHash = "AQAAAAIAAYagAAAAEEXvFXOUU9K32YqcpYOXVzGjf3B8fdbnUlTdTjmsISXiVA9b2aBL1GXoWw2YyNNSQQ==",
-                            Username = "admin"
-                        });
                 });
 
             modelBuilder.Entity("MemberManagement.Domain.Entities.Member", b =>

@@ -1,0 +1,99 @@
+﻿.login-page {
+    background: #ff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.login-card {
+    background: #ffffff;
+    border-radius: 25px;
+    padding: 40px 50px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.login-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.login-icon {
+    font-size: 48px;
+    color: #2e7d32;
+}
+
+.login-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2e7d32;
+    margin: 0;
+}
+
+.login-input {
+    border-radius: 15px;
+    border: 1px solid #b7d7be;
+    padding: 10px 15px;
+    background: #e6f5ea;
+    color: #1b3e20;
+    transition: all 0.2s ease-in-out;
+}
+
+.login-input:focus {
+    border-color: #2e7d32;
+    box-shadow: 0 0 8px rgba(46, 125, 50, 0.4);
+    outline: none;
+}
+
+.btn-login {
+    background: linear-gradient(90deg, #2e7d32, #81c784);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    background: linear-gradient(90deg, #27632a, #4caf50);
+    transform: translateY(-2px);
+}
+
+/* Member preview boxes */
+.member-preview {
+    margin-top: 30px;
+    padding: 15px;
+    border-radius: 15px;
+    background: #f1f9f3;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.03);
+}
+
+.preview-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.preview-box {
+    flex: 1;
+    height: 30px;
+    background: #d9ead3;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #27632a;
+    font-weight: 600;
+}
+
+.preview-box.full-width {
+    flex: 1 0 100%;
+}

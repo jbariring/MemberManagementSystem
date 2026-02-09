@@ -7,7 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MemberManagement.Domain\MemberManagement.Domain.csproj" />
+    <ProjectReference Include="..\MemberManagement.Infastructure\MemberManagement.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,25 @@
 ﻿/* Edit */
 /* Fix edit spacing */
+
+.header-frame {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.header-icon {
+    font-size: 22px;
+    color: forestgreen;
+}
+
+.header-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: forestgreen;
+    letter-spacing: 1px;
+}
+
 .edit-container {
     max-width: 520px;
     margin: 150px auto;
