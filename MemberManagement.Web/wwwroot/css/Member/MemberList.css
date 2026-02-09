@@ -6,8 +6,9 @@
     background: #e3efe8;
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    font-family: "Georgia", Serif;
+    font-family: Century Gothic, 'Avantgarde';
 }
+
 
 .header-frame {
     display: flex;
