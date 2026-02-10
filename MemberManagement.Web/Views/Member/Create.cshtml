@@ -1,18 +1,16 @@
 ﻿@model MemberManagement.Web.ViewModels.MemberVM
-<link rel="stylesheet" href="~/css/member/Create.css" />
-
+<link rel="stylesheet" href="~/css/member/Create.css" asp-append-version="true" />
 
 <div class="create-page">
     <div class="create-container">
         <div class="header-frame">
             <i class="header-icon fa fa-users"></i>
-            <div class="header-text">Create Member</div>
+            <div class="header-text">CREATE MEMBER</div>
         </div>
 
         <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <!-- Form fields -->
             <div class="form-group">
                 <i class="fa fa-user"></i>
                 <input asp-for="FirstName" placeholder=" " />

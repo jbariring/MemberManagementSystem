@@ -7,74 +7,68 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
 <link rel="stylesheet" href="~/css/member/Details.css" asp-append-version="true" />
 
-<div class="card details-card shadow-sm p-4">
+<div class="page-bg">
+    <div class="card details-card shadow-sm p-4">
 
-    <!-- Header -->
-    <div class="header-frame text-center mb-4">
-        <i class="bi bi-person-circle header-icon"></i>
-        <span class="header-text">#@Model.MemberID - @Model.LastName, @Model.FirstName</span>
-    </div>
+        <!-- Header -->
+        <div class="header-frame">
+            <i class="bi bi-person-circle header-icon"></i>
+            <span class="header-text">@Model.MemberID - @Model.LastName, @Model.FirstName</span>
+        </div>
 
-    <!-- Line 1: Member ID, First Name, Last Name -->
-    <div class="row mb-3">
-        <div class="col-md-4 col-sm-12 mb-2">
-            <dt>Member ID</dt>
-            <dd>@Model.MemberID</dd>
-        </div>
-        <div class="col-md-4 col-sm-12 mb-2">
-            <dt>First Name</dt>
-            <dd>@Model.FirstName</dd>
-        </div>
-        <div class="col-md-4 col-sm-12 mb-2">
-            <dt>Last Name</dt>
-            <dd>@Model.LastName</dd>
-        </div>
-    </div>
+        <!-- Details grid -->
+        <div class="details-grid">
+            <div class="detail-item">
+                <dt>Member ID</dt>
+                <dd>@Model.MemberID</dd>
+            </div>
+            <div class="detail-item">
+                <dt>First Name</dt>
+                <dd>@Model.FirstName</dd>
+            </div>
+            <div class="detail-item">
+                <dt>Last Name</dt>
+                <dd>@Model.LastName</dd>
+            </div>
 
-    <!-- Line 2: Birth Date, Address, Branch -->
-    <div class="row mb-3">
-        <div class="col-md-4 col-sm-12 mb-2">
-            <dt>Birth Date</dt>
-            <dd>@Model.BirthDate?.ToString("yyyy-MM-dd")</dd>
-        </div>
-        <div class="col-md-4 col-sm-12 mb-2">
-            <dt>Address</dt>
-            <dd>@Model.Address</dd>
-        </div>
-        <div class="col-md-4 col-sm-12 mb-2">
-            <dt>Branch</dt>
-            <dd>@Model.Branch</dd>
-        </div>
-    </div>
+            <div class="detail-item">
+                <dt>Birth Date</dt>
+                <dd>@Model.BirthDate?.ToString("yyyy-MM-dd")</dd>
+            </div>
+            <div class="detail-item">
+                <dt>Address</dt>
+                <dd>@Model.Address</dd>
+            </div>
+            <div class="detail-item">
+                <dt>Branch</dt>
+                <dd>@Model.Branch</dd>
+            </div>
 
-    <!-- Line 3: Contact No, Email, Status -->
-    <div class="row mb-3">
-        <div class="col-md-4 col-sm-12 mb-2">
-            <dt>Contact No</dt>
-            <dd>@Model.ContactNo</dd>
-        </div>
-        <div class="col-md-4 col-sm-12 mb-2">
-            <dt>Email</dt>
-            <dd>@Model.Email</dd>
-        </div>
-        <div class="col-md-4 col-sm-12 mb-2">
-            <dt>Status</dt>
-            <dd>@(Model.IsActive ? "Active" : "Inactive")</dd>
-        </div>
-    </div>
+            <div class="detail-item">
+                <dt>Contact No</dt>
+                <dd>@Model.ContactNo</dd>
+            </div>
+            <div class="detail-item">
+                <dt>Email</dt>
+                <dd>@Model.Email</dd>
+            </div>
+            <div class="detail-item">
+                <dt>Status</dt>
+                <dd>@(Model.IsActive ? "Active" : "Inactive")</dd>
+            </div>
 
-    <!-- Line 4: Date Created -->
-    <div class="row mb-3">
-        <div class="col-md-4 col-sm-12 mb-2">
-            <dt>Date Created</dt>
-            <dd>@Model.DateCreated.ToString("yyyy-MM-dd")</dd>
+            <div class="detail-item">
+                <dt>Date Created</dt>
+                <dd>@Model.DateCreated.ToString("yyyy-MM-dd")</dd>
+            </div>
         </div>
-    </div>
 
-    <!-- Back Button -->
-    <div class="text-center mt-4">
-        <a asp-action="MemberListPage" class="btn btn-modern">
-            Back to List
-        </a>
-    </div>
-</div>
+        <!-- Back Button -->
+        <div class="text-center mt-4">
+            <a asp-action="MemberListPage" class="btn btn-modern">
+                Back to List
+            </a>
+        </div>
+
+    </div> <!-- end card -->
+</div> <!-- end page-bg -->

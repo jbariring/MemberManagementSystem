@@ -1,42 +1,157 @@
-﻿/* Edit */
-/* Fix edit spacing */
+﻿/* ===========================
+   Edit Member – Green & White
+   =========================== */
 
+/* Page Background */
+.create-page {
+    background: #ffffff;
+    min-height: 100vh;
+    padding: 120px 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Container Card */
+.create-container {
+    width: 100%;
+    max-width: 520px;
+    padding: 40px 30px;
+    background: #ffffff;
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+    font-family: "Segoe UI", sans-serif;
+}
+
+    /* Gradient top line */
+    .create-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: linear-gradient(90deg, #2e7d32, #4caf50, #81c784);
+    }
+
+/* Header */
 .header-frame {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 25px;
+    justify-content: center;
 }
 
 .header-icon {
-    font-size: 22px;
-    color: forestgreen;
+    font-size: 24px;
+    color: #2e7d32;
 }
 
 .header-text {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
-    color: forestgreen;
-    letter-spacing: 1px;
+    color: #2e7d32;
 }
 
-.edit-container {
-    max-width: 520px;
-    margin: 150px auto;
-    padding: 20px 0 30px;
-    background: #e3efe8;
-    border-radius: 25px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    height: auto;
+/* Form Groups */
+.form-group {
+    position: relative;
+    margin-bottom: 18px;
 }
 
-    .edit-container form {
-        margin: 0 auto;
-        padding: 10px 30px 30px;
-        background: transparent;
-        box-shadow: none;
+    .form-group input {
+        width: 100%;
+        padding: 14px 14px 14px 45px;
+        border-radius: 25px;
+        border: 2px solid #cfe8d5;
+        font-size: 14px;
+        background: #f9fffb;
+        transition: all 0.2s ease;
+        outline: none;
     }
 
-.header-frame {
-    margin-bottom: 6px;
+        .form-group input:focus {
+            border-color: #4caf50;
+            box-shadow: 0 0 6px rgba(76, 175, 80, 0.3);
+        }
+
+    .form-group i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #4caf50;
+        font-size: 16px;
+    }
+
+    .form-group label {
+        position: absolute;
+        left: 45px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6b8f71;
+        font-size: 14px;
+        pointer-events: none;
+        background: #ffffff;
+        padding: 0 6px;
+        transition: 0.2s ease;
+    }
+
+    .form-group input:focus + label,
+    .form-group input:not(:placeholder-shown) + label {
+        top: -10px;
+        font-size: 12px;
+        color: #2e7d32;
+    }
+
+/* Validation messages */
+.text-danger {
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+/* Buttons */
+.button-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.btn-save,
+.btn-cancel {
+    padding: 10px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    border: 2px solid #2e7d32;
+    color: #2e7d32;
+    background: #ffffff;
+    transition: all 0.2s ease;
+}
+
+    .btn-save:hover,
+    .btn-cancel:hover {
+        background: linear-gradient(135deg, #4caf50, #2e7d32);
+        color: #fff;
+    }
+
+/* Responsive */
+@media (max-width: 640px) {
+    .create-container {
+        padding: 30px 20px;
+    }
+
+    .button-row {
+        flex-direction: column;
+    }
+
+        .button-row .btn-save,
+        .button-row .btn-cancel {
+            width: 100%;
+        }
 }

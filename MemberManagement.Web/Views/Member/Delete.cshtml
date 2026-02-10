@@ -2,15 +2,17 @@
 <link rel="stylesheet" href="~/css/member/Delete.css" />
 
 @{
-    ViewData["Title"] = "Delete Member";
+    ViewData["Title"] = "Deactivate Member";
 }
 
 <div class="delete-container">
 
+    <!-- Header -->
     <div class="header-frame">
         <h2>Deactivate Member</h2>
     </div>
 
+    <!-- Warning Box -->
     <div class="warning-box">
         <span class="warning-icon">⚠</span>
         <div>
@@ -19,6 +21,7 @@
         </div>
     </div>
 
+    <!-- Member Details -->
     <div class="details-card">
         <div class="card-row">
             <div class="card-label">Member ID</div>
@@ -27,9 +30,7 @@
 
         <div class="card-row">
             <div class="card-label">Name</div>
-            <div class="card-value">
-                @Model.FirstName @Model.LastName
-            </div>
+            <div class="card-value">@Model.FirstName @Model.LastName</div>
         </div>
 
         <div class="card-row">
@@ -38,9 +39,9 @@
         </div>
     </div>
 
+    <!-- Action Buttons -->
     <form asp-action="DeleteConfirmed" method="post">
         @Html.AntiForgeryToken()
-
         <input type="hidden" name="memberId" value="@Model.MemberID" />
 
         <div class="button-row">

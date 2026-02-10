@@ -1,15 +1,32 @@
-﻿/* Member List */
+﻿/* ============================
+   Member List – Green & White
+   ============================ */
+
+/* Container */
 .list-container {
     max-width: 1500px;
     margin: 40px auto;
     padding: 30px;
-    background: #e3efe8;
+    background: #ffffff;
+    font-family: "Century Gothic", "Segoe UI", sans-serif;
     border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    font-family: Century Gothic, 'Avantgarde';
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+    position: relative;
+    overflow: hidden;
 }
 
+    .list-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: linear-gradient( 90deg, #2e7d32, #4caf50, #81c784 );
+    }
 
+
+/* Header */
 .header-frame {
     display: flex;
     align-items: center;
@@ -19,16 +36,17 @@
 
 .header-icon {
     font-size: 22px;
-    color: forestgreen;
+    color: #2e7d32;
 }
 
 .header-text {
     font-size: 20px;
     font-weight: 700;
-    color: forestgreen;
+    color: #2e7d32;
     letter-spacing: 1px;
 }
 
+/* Top Row */
 .top-row {
     display: flex;
     justify-content: space-between;
@@ -36,96 +54,125 @@
     margin-bottom: 15px;
 }
 
+/* Search */
 .search-form {
     display: flex;
     gap: 10px;
 }
 
-.search-input {
-    padding: 8px;
-    width: 150px;
-    border-radius: 6px;
-    border: 1px solid #b7d7be;
+.search-input,
+select {
+    padding: 9px 12px;
+    width: 250px;
+    border-radius: 8px;
+    border: 1px solid #cfe8d5;
+    background: #f9fffb;
 }
 
+    .search-input:focus,
+    select:focus {
+        outline: none;
+        border-color: #4caf50;
+    }
+
+/* Buttons */
 .btn-search {
     padding: 10px 30px;
-    border-radius: 6px;
-    background: #4caf50;
-    color: #fff;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #4caf50, #2e7d32);
+    color: #ffffff;
     border: none;
+    font-weight: 600;
     cursor: pointer;
 }
 
+    .btn-search:hover {
+        opacity: 0.9;
+    }
+
 .btn-create {
-    padding: 10px 18px;
+    padding: 10px 20px;
     border-radius: 20px;
     font-weight: 600;
-    background: #fff;
-    color: #4caf50;
+    background: #ffffff;
+    color: #2e7d32;
     text-decoration: none;
-    border: 2px solid #4caf50;
+    border: 2px solid #2e7d32;
 }
 
     .btn-create:hover {
-        background: #4caf50;
-        color: #fff;
+        background: #2e7d32;
+        color: #ffffff;
     }
 
+/* Table Wrapper */
 .table-wrapper {
     overflow-x: auto;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
+/* Styled Table */
 .styled-table {
     width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
+    border-collapse: separate; /* allow row spacing for shadow effect */
+    border-spacing: 0 2px; /* space between rows */
+    background: transparent;
 }
 
+    /* Table Header */
     .styled-table thead th {
-        background: #A1BC98;
-        color: #333;
-        font-weight: 50;
-        padding: 10px;
+        background: #e8f5e9; /* light green header */
+        color: #2e7d32;
+        font-weight: 600;
+        padding: 14px 12px;
         text-align: left;
+        border-radius: 12px 12px 0 0; /* rounded top corners for header */
+        border-bottom: 2px solid #cfe8d5;
     }
 
+    /* Table Body Cells */
     .styled-table tbody td {
-        padding: 11px;
-        border-bottom: none;
-        font-weight: 10;
-        padding: 2px;
+        padding: 5px 10px;
         color: #333;
     }
 
-    .styled-table tbody tr:hover {
-        outline: 1px solid #A1BC98; /* Outline color and thickness */
-        outline-offset: -3px; /* Optional: makes the outline snug around the row */
-        background: none; /* Ensure background stays unchanged */
+    /* Table Rows - Card Style */
+    .styled-table tbody tr {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        transition: all 0.25s ease;
     }
 
+        /* Row Hover Effect */
+        .styled-table tbody tr:hover {
+            background: #f1f9f1; /* very light green on hover */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
 
+/* Actions Column */
 .actions {
     display: flex;
-    gap: 1px;
+    gap: 6px;
     justify-content: center;
     align-items: center;
-    white-space: nowrap; /* prevents wrapping into multiple lines */
 }
 
 .action-icon {
     color: #4caf50;
     font-size: 16px;
     text-decoration: none;
-    padding: 5px;
-    border-radius: 6px;
-    transition: all 0.2s ease-in-out;
+    padding: 6px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
 }
 
+    .action-icon:hover {
+        background: #e8f5e9;
+    }
 
+/* No Data */
 .no-data {
     text-align: center;
     padding: 20px;
@@ -133,8 +180,9 @@
     font-style: italic;
 }
 
+/* Result Count */
 .result-count {
     margin-bottom: 8px;
-    font-size: 0.9rem;
-    color: #555;
+    font-size: 0.85rem;
+    color: #4f7f5a;
 }
