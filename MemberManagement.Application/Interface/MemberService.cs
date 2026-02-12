@@ -19,8 +19,7 @@ namespace MemberManagement.Application.Services
 
         public async Task<Member?> GetByIdAsync(int memberID)
         {
-            var members = await _memberRepository.GetAsync(memberID);
-            return members.FirstOrDefault();
+            return await _memberRepository.GetByIdAsync(memberID);
         }
 
         public async Task AddAsync(Member member)

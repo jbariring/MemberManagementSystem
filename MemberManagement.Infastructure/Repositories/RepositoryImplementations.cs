@@ -4,43 +4,88 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MemberManagement.Infrastructure.Repositories
 {
-    public class MemberRepository(MMSDbContext context) : IMemberRepository
+    public class MemberRepository : IMemberRepository
     {
-        private readonly MMSDbContext _context = context;
+        private readonly MMSDbContext _context;
 
-        public async Task<List<Member>> GetAllAsync() // Get all active members
+        public MemberRepository(MMSDbContext context)
         {
-            return await _context.Members.Where(m => m.IsActive).ToListAsync();
+            _context = context;
         }
 
-        public async Task<List<Member>> GetAsync(int memberID) //Get member by ID
+        // Get all active members
+        public async Task<List<Member>> GetAllAsync()
         {
-            return await _context.Members.Where(m => m.MemberID == memberID).ToListAsync();
+            return await _context.Members
+                                 .Where(m => m.IsActive)
+                                 .ToListAsync();
         }
 
-        public async Task AddAsync(Member member) // Add a new member
+        // Get member by ID
+        public async Task<Member?> GetByIdAsync(int memberId)
         {
-            member.IsActive = true;
-            member.DateCreated = DateTime.UtcNow;
-            _context.Members.Add(member);
+            return await _context.Members
+                                 .FirstOrDefaultAsync(m => m.MemberID == memberId && m.IsActive);
+        }
+
+        // Add a new member
+        public async Task AddAsync(Member member)
+        {
+            // No need to set IsActive/DateCreated; entity constructor handles it
+            await _context.Members.AddAsync(member);
             await _context.SaveChangesAsync();
         }
-        public async Task UpdateAsync(Member member) // Update other fields as necessary
+
+        // Update member details
+        public async Task UpdateAsync(Member member)
         {
+            // Entity should have updated values via UpdateDetails
             _context.Members.Update(member);
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteAsync(int memberID) // Soft delete a member
+
+        // Soft delete a member
+        public async Task DeleteAsync(int memberId)
         {
-            var member = await _context.Members.FindAsync(memberID);
+            var member = await _context.Members.FindAsync(memberId);
             if (member != null)
             {
-                _context.Members.Remove(member);
+                member.Deactivate(); // domain handles IsActive
+                _context.Members.Update(member);
                 await _context.SaveChangesAsync();
             }
         }
+
+        // Optional: paginated members
+        public async Task<List<Member>> GetPagedAsync(int pageNumber, int pageSize, string? searchLastName = null, string? branch = null)
+        {
+            var query = _context.Members.AsQueryable().Where(m => m.IsActive);
+
+            if (!string.IsNullOrEmpty(searchLastName))
+                query = query.Where(m => m.LastName.ToLower().Contains(searchLastName.ToLower()));
+
+            if (!string.IsNullOrEmpty(branch))
+                query = query.Where(m => m.Branch == branch);
+
+            return await query
+                        .OrderBy(m => m.MemberID)
+                        .Skip((pageNumber - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToListAsync();
+        }
+
+        // Optional: total count for pagination
+        public async Task<int> CountAsync(string? searchLastName = null, string? branch = null)
+        {
+            var query = _context.Members.AsQueryable().Where(m => m.IsActive);
+
+            if (!string.IsNullOrEmpty(searchLastName))
+                query = query.Where(m => m.LastName.ToLower().Contains(searchLastName.ToLower()));
+
+            if (!string.IsNullOrEmpty(branch))
+                query = query.Where(m => m.Branch == branch);
+
+            return await query.CountAsync();
+        }
     }
 }
-
-
-
