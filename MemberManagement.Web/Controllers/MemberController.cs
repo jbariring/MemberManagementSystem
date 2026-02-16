@@ -4,8 +4,8 @@ using MemberManagement.Web.ViewModels;
 using MemberManagement.Web.ViewModels.Member;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
-
 
 namespace MemberManagement.Web.Controllers
 {
@@ -17,6 +17,7 @@ namespace MemberManagement.Web.Controllers
         {
             _context = context;
         }
+
         public IActionResult MemberListPage(string? searchLastName, string? branch, int pageNumber = 1, int pageSize = 5)
         {
             var query = _context.Members
@@ -30,11 +31,11 @@ namespace MemberManagement.Web.Controllers
                 query = query.Where(m => m.LastName != null && m.LastName.ToLower().Contains(searchLower));
             }
 
-            // Case-insensitive filter by branch
+            // Case-insensitive filter by branch (using Branch entity)
             if (!string.IsNullOrEmpty(branch))
             {
                 var branchLower = branch.Trim().ToLower();
-                query = query.Where(m => m.Branch != null && m.Branch.Trim().ToLower() == branchLower);
+                query = query.Where(m => m.Branch != null && m.Branch.Name.ToLower() == branchLower && m.Branch.IsActive);
             }
 
             int totalMembers = query.Count();
@@ -42,6 +43,7 @@ namespace MemberManagement.Web.Controllers
             int endItem = totalMembers == 0 ? 0 : Math.Min(pageNumber * pageSize, totalMembers);
 
             var members = query
+                .Include(m => m.Branch)
                 .OrderBy(m => m.MemberID)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
@@ -52,7 +54,7 @@ namespace MemberManagement.Web.Controllers
                     LastName = m.LastName,
                     BirthDate = m.BirthDate,
                     Address = m.Address,
-                    Branch = m.Branch,
+                    Branch = m.Branch != null ? m.Branch.Name : string.Empty,
                     ContactNo = m.ContactNo,
                     Email = m.Email,
                     IsActive = m.IsActive,
@@ -61,11 +63,10 @@ namespace MemberManagement.Web.Controllers
                 .ToList();
 
             // Distinct branches for dropdown
-            var branches = _context.Members
-                .Where(m => m.IsActive && !string.IsNullOrEmpty(m.Branch))
-                .Select(m => m.Branch!)
-                .Distinct()
-                .OrderBy(b => b)
+            var branches = _context.Branches
+                .Where(b => b.IsActive)
+                .OrderBy(b => b.Name)
+                .Select(b => b.Name)
                 .ToList();
 
             var vm = new MemberListVM
@@ -88,11 +89,15 @@ namespace MemberManagement.Web.Controllers
             return View(vm);
         }
 
-
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var vm = new CreateMemberVM
+            {
+
+            };
+
+            return View(vm);
         }
 
         [HttpPost]
@@ -101,12 +106,22 @@ namespace MemberManagement.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
+            // Try to find the branch
+            var branchEntity = _context.Branches.Find(model.BranchID);
+
+            // ✅ Add check for null or inactive branch
+            if (branchEntity == null || !branchEntity.IsActive)
+            {
+                ModelState.AddModelError(nameof(model.BranchID), "Please select a valid active branch.");
+                return View(model);
+            }
+
             var member = new Member(
                 model.FirstName,
                 model.LastName,
                 model.BirthDate,
                 model.Address,
-                model.Branch,
+                branchEntity,
                 model.ContactNo,
                 model.Email
             );
@@ -116,8 +131,6 @@ namespace MemberManagement.Web.Controllers
 
             return RedirectToAction(nameof(MemberListPage));
         }
-
-
 
 
         [HttpGet]
@@ -133,9 +146,17 @@ namespace MemberManagement.Web.Controllers
                 LastName = member.LastName,
                 BirthDate = member.BirthDate,
                 Address = member.Address,
-                Branch = member.Branch,
+                BranchID = member.Branch?.BranchID ?? 0,  // correct property
                 ContactNo = member.ContactNo,
-                Email = member.Email
+                Email = member.Email,
+                Branches = _context.Branches
+                    .Where(b => b.IsActive)
+                    .OrderBy(b => b.Name)
+                    .Select(b => new SelectListItem
+                    {
+                        Value = b.BranchID.ToString(),
+                        Text = b.Name
+                    }).ToList()
             };
 
             return View(model);
@@ -146,18 +167,48 @@ namespace MemberManagement.Web.Controllers
         public IActionResult Edit(EditMemberVM model)
         {
             if (!ModelState.IsValid)
+            {
+                // Repopulate dropdown
+                model.Branches = _context.Branches
+                    .Where(b => b.IsActive)
+                    .OrderBy(b => b.Name)
+                    .Select(b => new SelectListItem
+                    {
+                        Value = b.BranchID.ToString(),
+                        Text = b.Name
+                    }).ToList();
+
                 return View(model);
+            }
 
             var member = _context.Members.Find(model.MemberID);
             if (member == null) return NotFound();
 
-            // Let the entity handle its own update
+            var branchEntity = _context.Branches.Find(model.BranchID);
+
+            if (branchEntity == null || !branchEntity.IsActive)
+            {
+                ModelState.AddModelError(nameof(model.BranchID), "Please select a valid active branch.");
+
+                // Repopulate dropdown
+                model.Branches = _context.Branches
+                    .Where(b => b.IsActive)
+                    .OrderBy(b => b.Name)
+                    .Select(b => new SelectListItem
+                    {
+                        Value = b.BranchID.ToString(),
+                        Text = b.Name
+                    }).ToList();
+
+                return View(model);
+            }
+
             member.UpdateDetails(
                 model.FirstName,
                 model.LastName,
                 model.BirthDate,
                 model.Address,
-                model.Branch,
+                branchEntity.BranchID,  // ✅ Pass the ID, not the object
                 model.ContactNo,
                 model.Email
             );
@@ -180,7 +231,7 @@ namespace MemberManagement.Web.Controllers
                 LastName = member.LastName,
                 BirthDate = member.BirthDate,
                 Address = member.Address,
-                Branch = member.Branch,
+                Branch = member.Branch?.Name,
                 ContactNo = member.ContactNo,
                 Email = member.Email,
                 IsActive = member.IsActive,
@@ -189,7 +240,6 @@ namespace MemberManagement.Web.Controllers
 
             return View(model);
         }
-
 
         [HttpGet]
         public IActionResult Delete(int id)
@@ -222,6 +272,5 @@ namespace MemberManagement.Web.Controllers
 
             return RedirectToAction(nameof(MemberListPage));
         }
-
     }
 }

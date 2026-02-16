@@ -48,10 +48,13 @@
 
             <div class="form-group">
                 <i class="fa fa-building"></i>
-                <input asp-for="Branch" placeholder=" " />
-                <label asp-for="Branch"></label>
-                <span asp-validation-for="Branch" class="text-danger"></span>
+                <label asp-for="BranchID">Branch</label>
+                <select asp-for="BranchID" asp-items="Model.Branches" class="form-control">
+                    <option value="">-- Select Branch --</option>
+                </select>
+                <span asp-validation-for="BranchID" class="text-danger"></span>
             </div>
+
 
             <div class="form-group">
                 <i class="fa fa-phone"></i>

@@ -22,47 +22,32 @@ namespace MemberManagement.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MemberManagement.Domain.Entities.AppUser", b =>
+            modelBuilder.Entity("MemberManagement.Domain.Entities.Branch", b =>
                 {
-                    b.Property<int>("UserID")
+                    b.Property<int>("BranchID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"));
-
-                    b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BranchID"));
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<string>("Location")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("UserID");
+                    b.HasKey("BranchID");
 
-                    b.ToTable("AppUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            UserID = 1,
-                            DateCreated = new DateTime(2026, 2, 9, 16, 32, 41, 749, DateTimeKind.Local).AddTicks(5420),
-                            IsActive = true,
-                            PasswordHash = "AQAAAAIAAYagAAAAEEXvFXOUU9K32YqcpYOXVzGjf3B8fdbnUlTdTjmsISXiVA9b2aBL1GXoWw2YyNNSQQ==",
-                            Username = "admin"
-                        });
+                    b.ToTable("Branches");
                 });
 
             modelBuilder.Entity("MemberManagement.Domain.Entities.Member", b =>
@@ -79,8 +64,8 @@ namespace MemberManagement.Infrastructure.Migrations
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("date");
 
-                    b.Property<string>("Branch")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("BranchID")
+                        .HasColumnType("int");
 
                     b.Property<string>("ContactNo")
                         .HasColumnType("nvarchar(max)");
@@ -96,7 +81,9 @@ namespace MemberManagement.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -104,7 +91,25 @@ namespace MemberManagement.Infrastructure.Migrations
 
                     b.HasKey("MemberID");
 
+                    b.HasIndex("BranchID");
+
                     b.ToTable("Members");
+                });
+
+            modelBuilder.Entity("MemberManagement.Domain.Entities.Member", b =>
+                {
+                    b.HasOne("MemberManagement.Domain.Entities.Branch", "Branch")
+                        .WithMany("Members")
+                        .HasForeignKey("BranchID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+                });
+
+            modelBuilder.Entity("MemberManagement.Domain.Entities.Branch", b =>
+                {
+                    b.Navigation("Members");
                 });
 #pragma warning restore 612, 618
         }

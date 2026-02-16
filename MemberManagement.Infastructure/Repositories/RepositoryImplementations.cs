@@ -64,8 +64,8 @@ namespace MemberManagement.Infrastructure.Repositories
             if (!string.IsNullOrEmpty(searchLastName))
                 query = query.Where(m => m.LastName.ToLower().Contains(searchLastName.ToLower()));
 
-            if (!string.IsNullOrEmpty(branch))
-                query = query.Where(m => m.Branch == branch);
+            var branchLower = branch.Trim().ToLower();
+            query = query.Where(m => m.Branch.Name.ToLower() == branchLower && m.Branch.IsActive);
 
             return await query
                         .OrderBy(m => m.MemberID)
@@ -83,7 +83,7 @@ namespace MemberManagement.Infrastructure.Repositories
                 query = query.Where(m => m.LastName.ToLower().Contains(searchLastName.ToLower()));
 
             if (!string.IsNullOrEmpty(branch))
-                query = query.Where(m => m.Branch == branch);
+                query = query.Where(m => m.Branch.Name == branch && m.Branch.IsActive);
 
             return await query.CountAsync();
         }

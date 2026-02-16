@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace MemberManagement.Web.ViewModels.Member
 {
@@ -14,7 +15,9 @@ namespace MemberManagement.Web.ViewModels.Member
         public DateTime? BirthDate { get; set; }
 
         public string? Address { get; set; }
-        public string? Branch { get; set; }
+        public int BranchID { get; set; }  // <--- must exist
+        // For dropdown
+        public IEnumerable<SelectListItem> Branches { get; set; } = new List<SelectListItem>();
 
         [Phone]
         public string? ContactNo { get; set; }
