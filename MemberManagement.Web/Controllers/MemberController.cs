@@ -19,6 +19,21 @@ namespace MemberManagement.Web.Controllers
             _context = context;
         }
 
+        // ------------------- Helper Method -------------------
+        private List<SelectListItem> GetActiveBranches(int? selectedBranchId = null)
+        {
+            return _context.Branches
+                .Where(b => b.IsActive)
+                .OrderBy(b => b.Name)
+                .Select(b => new SelectListItem
+                {
+                    Value = b.BranchID.ToString(),
+                    Text = b.Name,
+                    Selected = selectedBranchId.HasValue && b.BranchID == selectedBranchId.Value
+                })
+                .ToList();
+        }
+
         // Member list page with search & filter
         public IActionResult MemberListPage(string? searchLastName, string? branch, int pageNumber = 1, int pageSize = 5)
         {
@@ -94,14 +109,7 @@ namespace MemberManagement.Web.Controllers
         {
             var vm = new CreateMemberVM
             {
-                Branches = _context.Branches
-                    .Where(b => b.IsActive)
-                    .OrderBy(b => b.Name)
-                    .Select(b => new SelectListItem
-                    {
-                        Value = b.BranchID.ToString(),
-                        Text = b.Name
-                    }).ToList()
+                Branches = GetActiveBranches()
             };
             return View(vm);
         }
@@ -112,42 +120,24 @@ namespace MemberManagement.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.Branches = _context.Branches
-                    .Where(b => b.IsActive)
-                    .OrderBy(b => b.Name)
-                    .Select(b => new SelectListItem
-                    {
-                        Value = b.BranchID.ToString(),
-                        Text = b.Name
-                    }).ToList();
+                model.Branches = GetActiveBranches(model.BranchID);
                 return View(model);
             }
 
             var branchEntity = _context.Branches.Find(model.BranchID);
-
             if (branchEntity == null || !branchEntity.IsActive)
             {
                 ModelState.AddModelError(nameof(model.BranchID), "Please select a valid active branch.");
-                model.Branches = _context.Branches
-                    .Where(b => b.IsActive)
-                    .OrderBy(b => b.Name)
-                    .Select(b => new SelectListItem
-                    {
-                        Value = b.BranchID.ToString(),
-                        Text = b.Name
-                    }).ToList();
+                model.Branches = GetActiveBranches(model.BranchID);
                 return View(model);
             }
 
-            // --------------------------
-            // ADJUSTED: Use BranchID directly to avoid FK conflict
-            // --------------------------
             var member = new Member(
                 model.FirstName,
                 model.LastName,
                 model.BirthDate,
                 model.Address,
-                model.BranchID,   // <-- use FK directly instead of passing branchEntity
+                model.BranchID,
                 model.ContactNo,
                 model.Email
             );
@@ -159,33 +149,23 @@ namespace MemberManagement.Web.Controllers
             }
             catch (DbUpdateException ex)
             {
-                // ADJUSTED: catch FK/database errors and display
                 var innerMessage = ex.InnerException?.Message ?? ex.Message;
                 ModelState.AddModelError(string.Empty, $"Database error: {innerMessage}");
-
-                // Re-populate the branches dropdown
-                model.Branches = _context.Branches
-                    .Where(b => b.IsActive)
-                    .OrderBy(b => b.Name)
-                    .Select(b => new SelectListItem
-                    {
-                        Value = b.BranchID.ToString(),
-                        Text = b.Name
-                    }).ToList();
-
+                model.Branches = GetActiveBranches(model.BranchID);
                 return View(model);
             }
 
             return RedirectToAction(nameof(MemberListPage));
         }
 
-        // -------------------------- Remaining actions (Edit, Details, Delete) unchanged --------------------------
-
-        // GET: Edit
+        // ------------------- Edit -------------------
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var member = _context.Members.Find(id);
+            var member = _context.Members
+                   .Include(m => m.Branch)
+                   .FirstOrDefault(m => m.MemberID == id);
+
             if (member == null) return NotFound();
 
             var model = new EditMemberVM
@@ -198,33 +178,18 @@ namespace MemberManagement.Web.Controllers
                 BranchID = member.Branch?.BranchID ?? 0,
                 ContactNo = member.ContactNo,
                 Email = member.Email,
-                Branches = _context.Branches
-                    .Where(b => b.IsActive)
-                    .OrderBy(b => b.Name)
-                    .Select(b => new SelectListItem
-                    {
-                        Value = b.BranchID.ToString(),
-                        Text = b.Name
-                    }).ToList()
+                Branches = GetActiveBranches(member.Branch?.BranchID)
             };
 
             return View(model);
         }
 
-        // POST: Edit
         [HttpPost]
         public IActionResult Edit(EditMemberVM model)
         {
             if (!ModelState.IsValid)
             {
-                model.Branches = _context.Branches
-                    .Where(b => b.IsActive)
-                    .OrderBy(b => b.Name)
-                    .Select(b => new SelectListItem
-                    {
-                        Value = b.BranchID.ToString(),
-                        Text = b.Name
-                    }).ToList();
+                model.Branches = GetActiveBranches(model.BranchID);
                 return View(model);
             }
 
@@ -235,14 +200,7 @@ namespace MemberManagement.Web.Controllers
             if (branchEntity == null || !branchEntity.IsActive)
             {
                 ModelState.AddModelError(nameof(model.BranchID), "Please select a valid active branch.");
-                model.Branches = _context.Branches
-                    .Where(b => b.IsActive)
-                    .OrderBy(b => b.Name)
-                    .Select(b => new SelectListItem
-                    {
-                        Value = b.BranchID.ToString(),
-                        Text = b.Name
-                    }).ToList();
+                model.Branches = GetActiveBranches(model.BranchID);
                 return View(model);
             }
 
@@ -260,14 +218,13 @@ namespace MemberManagement.Web.Controllers
             return RedirectToAction(nameof(MemberListPage));
         }
 
-        // GET: Details
         [HttpGet]
         public IActionResult Details(int id)
         {
-            var member = _context.Members.Find(id);
-            if (member == null) return NotFound();
+            var member = _context.Members
+                    .Include(m => m.Branch) // <-- load branch here
+                    .FirstOrDefault(m => m.MemberID == id);
 
-            // Map to MemberDetailsVM for the view
             var model = new MemberDetailsVM
             {
                 MemberID = member.MemberID,
@@ -284,6 +241,7 @@ namespace MemberManagement.Web.Controllers
 
             return View(model);
         }
+
 
         // GET: Delete
         [HttpGet]

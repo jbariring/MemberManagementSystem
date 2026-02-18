@@ -46,15 +46,18 @@
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group select-wrapper">
                 <i class="fa fa-building"></i>
-                <label asp-for="BranchID">Branch</label>
-                <select asp-for="BranchID" asp-items="Model.Branches" class="form-control">
-                    <option value="">-- Select Branch --</option>
+                <select asp-for="BranchID" asp-items="Model.Branches" class="form-control" placeholder=" ">
+                    @* Placeholder shown only if no branch is selected *@
+                    @if (Model.BranchID == 0)
+                    {
+                        <option value="">-- Select Branch --</option>
+                    }
                 </select>
+                <label asp-for="BranchID">Branch</label>
                 <span asp-validation-for="BranchID" class="text-danger"></span>
             </div>
-
 
             <div class="form-group">
                 <i class="fa fa-phone"></i>

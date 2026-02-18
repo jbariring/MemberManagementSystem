@@ -22,7 +22,7 @@
                    placeholder="Search by Last Name..." />
 
             <!-- Branch filter -->
-            <select id="branch" asp-for="Branch" asp-items="Model.Branches">
+            <select id="branch" name="branch" asp-for="Branch" asp-items="Model.Branches" class="search-select">
                 <option value="">All Branches</option>
             </select>
 
