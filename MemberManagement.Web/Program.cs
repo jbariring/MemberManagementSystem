@@ -25,6 +25,11 @@ namespace MemberManagement.Web
             builder.Services.AddScoped<IMemberRepository, MemberRepository>();
             builder.Services.AddScoped<IMemberService, MemberService>();
 
+            // Add DI for Branch
+            builder.Services.AddScoped<IBranchRepository, BranchRepository>();
+            builder.Services.AddScoped<IBranchService, BranchService>();
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline

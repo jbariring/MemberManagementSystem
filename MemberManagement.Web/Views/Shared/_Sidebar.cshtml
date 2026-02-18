@@ -1,0 +1,36 @@
+﻿@* Sidebar for navigation *@
+<nav class="sidebar bg-light border-end vh-100 position-fixed" style="width:220px;">
+    <div class="p-3">
+        <h4>Member Management</h4>
+    </div>
+    <ul class="list-unstyled ps-0">
+        <li class="mb-1">
+            <a asp-controller="Member" asp-action="MemberListPage" class="btn btn-toggle align-items-center rounded">
+                Members
+            </a>
+        </li>
+        <li class="mb-1">
+            <a asp-controller="BranchD" asp-action="Index" class="btn btn-toggle align-items-center rounded">
+                Branches
+            </a>
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li>
+@*                     <a asp-controller="BranchD" asp-action="Create" class="link-dark rounded">Add New Branch</a> *@
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<style>
+    .sidebar .btn-toggle {
+        display: flex;
+        width: 100%;
+        padding: 0.5rem 1rem;
+        text-align: left;
+    }
+
+    .sidebar .btn-toggle-nav {
+        padding-left: 1rem;
+    }
+</style>
