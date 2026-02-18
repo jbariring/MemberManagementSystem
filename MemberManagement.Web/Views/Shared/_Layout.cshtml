@@ -9,6 +9,32 @@
     <link rel="stylesheet" href="~/MemberManagement.Web.styles.css" asp-append-version="true" />
 
     @RenderSection("Styles", required: false)
+
+    <style>
+        /* Sidebar specific styles */
+        .sidebar {
+            width: 220px;
+            position: fixed;
+            height: 100vh;
+        }
+
+            .sidebar .btn-toggle {
+                display: flex;
+                width: 100%;
+                padding: 0.5rem 1rem;
+                text-align: left;
+            }
+
+            .sidebar .btn-toggle-nav {
+                padding-left: 1rem;
+            }
+
+        .main-content {
+            margin-left: 220px;
+            flex-grow: 1;
+            padding: 1rem;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -16,13 +42,32 @@
     </header>
 
     <div class="d-flex">
-        @* Sidebar Partial *@
-        <div>
-            @await Html.PartialAsync("_Sidebar")
-        </div>
+        @* Sidebar Partial or inline markup *@
+        <nav class="sidebar bg-light border-end">
+            <div class="p-3">
+                <h4>Member Management</h4>
+            </div>
+            <ul class="list-unstyled ps-0">
+                <li class="mb-1">
+                    <a asp-controller="Member" asp-action="MemberListPage" class="btn btn-toggle align-items-center rounded">
+                        Members
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a asp-controller="BranchD" asp-action="Index" class="btn btn-toggle align-items-center rounded">
+                        Branches
+                    </a>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li>
+                            @* <a asp-controller="BranchD" asp-action="Create" class="link-dark rounded">Add New Branch</a> *@
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
 
         @* Main content area *@
-        <div class="flex-grow-1 p-3" style="margin-left:220px;">
+        <div class="main-content">
             <main role="main" class="pb-3">
                 @RenderBody()
             </main>
