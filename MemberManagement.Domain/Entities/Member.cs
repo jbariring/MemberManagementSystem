@@ -20,9 +20,12 @@ namespace MemberManagement.Domain.Entities
 
         // Foreign Key to Branch
         public int BranchID { get; private set; }
+        public int MembershipTypeID { get; private set; }  // <-- New FK
+
 
         // Navigation property
         public Branch Branch { get; private set; }
+        public MembershipType MembershipType { get; private set; } // <-- New navigation property
 
         public string? ContactNo { get; private set; }
         public string? Email { get; private set; }
@@ -38,6 +41,7 @@ namespace MemberManagement.Domain.Entities
             DateTime? birthDate,
             string? address,
             int branchId,
+            int membershipTypeId,
             string? contactNo,
             string? email
         )
@@ -47,6 +51,7 @@ namespace MemberManagement.Domain.Entities
             BirthDate = birthDate;
             Address = address;
             BranchID = branchId;
+            MembershipTypeID = membershipTypeId;
             ContactNo = contactNo;
             Email = email;
 
@@ -72,6 +77,7 @@ namespace MemberManagement.Domain.Entities
             DateTime? birthDate,
             string? address,
             int branchId,
+            int membershipTypeId,
             string? contactNo,
             string? email
         )
@@ -81,6 +87,7 @@ namespace MemberManagement.Domain.Entities
             BirthDate = birthDate;
             Address = address;
             BranchID = branchId;
+            MembershipTypeID = membershipTypeId;
             ContactNo = contactNo;
             Email = email;
         }

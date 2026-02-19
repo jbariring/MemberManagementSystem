@@ -22,6 +22,8 @@ namespace MemberManagement.Web.ViewModels.Member
 
         [Required(ErrorMessage = "Please select a branch")]
         public int? BranchID { get; set; }  // <-- important for dropdown
+        [Required(ErrorMessage = "Please select a MembershipType")]
+        public int? MembershipTypeID { get; set; }  // <-- important for dropdown
 
         public string? ContactNo { get; set; }
         public string? Email { get; set; }

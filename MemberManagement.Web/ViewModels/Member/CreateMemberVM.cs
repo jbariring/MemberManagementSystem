@@ -16,6 +16,7 @@ namespace MemberManagement.Web.ViewModels.Member
 
         public string? Address { get; set; }
         public int BranchID { get; set; }  // <--- must exist
+        public int MembershipTypeID { get; set; }  // <--- must exist
         // For dropdown
         public IEnumerable<SelectListItem> Branches { get; set; } = new List<SelectListItem>();
 

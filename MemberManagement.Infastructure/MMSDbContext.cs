@@ -29,6 +29,12 @@ namespace MemberManagement.Infrastructure
                       .HasForeignKey(m => m.BranchID)
                       .OnDelete(DeleteBehavior.Cascade);
 
+                // Configure relationship to MembershipType
+                entity.HasOne(m => m.MembershipType)
+                      .WithMany(mt => mt.Members)
+                      .HasForeignKey(m => m.MembershipTypeID)
+                      .OnDelete(DeleteBehavior.Restrict); // Usually restrict to avoid cascade delete
+
                 // Configure IsActive default value
                 entity.Property(m => m.IsActive)
                       .HasDefaultValue(true);
@@ -46,6 +52,17 @@ namespace MemberManagement.Infrastructure
 
                 // Configure IsActive default value
                 entity.Property(b => b.IsActive)
+                      .HasDefaultValue(true);
+            });
+
+            // MembershipType configuration
+            modelBuilder.Entity<MembershipType>(entity =>
+            {
+                entity.Property(mt => mt.Name)
+                      .IsRequired()
+                      .HasMaxLength(50);
+
+                entity.Property(mt => mt.IsActive)
                       .HasDefaultValue(true);
             });
 

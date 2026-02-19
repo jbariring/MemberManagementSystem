@@ -13,6 +13,7 @@ namespace MemberManagement.Web.ViewModels.Member
 
         public string? Address { get; set; }
         public string? Branch { get; set; }
+        public string? MembershipType { get; set; }
         public string? ContactNo { get; set; }
         public string? Email { get; set; }
 

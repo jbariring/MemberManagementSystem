@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MemberManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(MMSDbContext))]
-    [Migration("20260219074452_AddMembershipTypeTable")]
-    partial class AddMembershipTypeTable
+    [Migration("20260219084348_AddMembershipTypeFK")]
+    partial class AddMembershipTypeFK
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,11 +92,39 @@ namespace MemberManagement.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("MembershipTypeID")
+                        .HasColumnType("int");
+
                     b.HasKey("MemberID");
 
                     b.HasIndex("BranchID");
 
+                    b.HasIndex("MembershipTypeID");
+
                     b.ToTable("Members");
+                });
+
+            modelBuilder.Entity("MemberManagement.Domain.Entities.MembershipType", b =>
+                {
+                    b.Property<int>("MembershipTypeID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MembershipTypeID"));
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("MembershipTypeID");
+
+                    b.ToTable("MembershipTypes");
                 });
 
             modelBuilder.Entity("MemberManagement.Domain.Entities.Member", b =>
@@ -107,10 +135,23 @@ namespace MemberManagement.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MemberManagement.Domain.Entities.MembershipType", "MembershipType")
+                        .WithMany("Members")
+                        .HasForeignKey("MembershipTypeID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Branch");
+
+                    b.Navigation("MembershipType");
                 });
 
             modelBuilder.Entity("MemberManagement.Domain.Entities.Branch", b =>
+                {
+                    b.Navigation("Members");
+                });
+
+            modelBuilder.Entity("MemberManagement.Domain.Entities.MembershipType", b =>
                 {
                     b.Navigation("Members");
                 });

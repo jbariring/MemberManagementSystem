@@ -4,6 +4,7 @@ using MemberManagement.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MemberManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(MMSDbContext))]
-    partial class MMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260219080519_MembershipTypeTable")]
+    partial class MembershipTypeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,7 +50,7 @@ namespace MemberManagement.Infrastructure.Migrations
 
                     b.HasKey("BranchID");
 
-                    b.ToTable("Branches", (string)null);
+                    b.ToTable("Branches");
                 });
 
             modelBuilder.Entity("MemberManagement.Domain.Entities.Member", b =>
@@ -89,7 +92,7 @@ namespace MemberManagement.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MembershipTypeID")
+                    b.Property<int?>("MembershipTypeID")
                         .HasColumnType("int");
 
                     b.HasKey("MemberID");
@@ -98,7 +101,7 @@ namespace MemberManagement.Infrastructure.Migrations
 
                     b.HasIndex("MembershipTypeID");
 
-                    b.ToTable("Members", (string)null);
+                    b.ToTable("Members");
                 });
 
             modelBuilder.Entity("MemberManagement.Domain.Entities.MembershipType", b =>
@@ -110,18 +113,15 @@ namespace MemberManagement.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MembershipTypeID"));
 
                     b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MembershipTypeID");
 
-                    b.ToTable("MembershipTypes", (string)null);
+                    b.ToTable("MembershipTypes");
                 });
 
             modelBuilder.Entity("MemberManagement.Domain.Entities.Member", b =>
@@ -132,15 +132,11 @@ namespace MemberManagement.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MemberManagement.Domain.Entities.MembershipType", "MembershipType")
+                    b.HasOne("MemberManagement.Domain.Entities.MembershipType", null)
                         .WithMany("Members")
-                        .HasForeignKey("MembershipTypeID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("MembershipTypeID");
 
                     b.Navigation("Branch");
-
-                    b.Navigation("MembershipType");
                 });
 
             modelBuilder.Entity("MemberManagement.Domain.Entities.Branch", b =>

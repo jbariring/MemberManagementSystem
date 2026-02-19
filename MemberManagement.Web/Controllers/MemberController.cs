@@ -138,6 +138,7 @@ namespace MemberManagement.Web.Controllers
                 model.BirthDate,
                 model.Address,
                 model.BranchID,
+                model.MembershipTypeID,
                 model.ContactNo,
                 model.Email
             );
@@ -176,6 +177,7 @@ namespace MemberManagement.Web.Controllers
                 BirthDate = member.BirthDate,
                 Address = member.Address,
                 BranchID = member.Branch?.BranchID ?? 0,
+                MembershipTypeID = member.MembershipTypeID,
                 ContactNo = member.ContactNo,
                 Email = member.Email,
                 Branches = GetActiveBranches(member.Branch?.BranchID)
@@ -210,6 +212,7 @@ namespace MemberManagement.Web.Controllers
                 model.BirthDate,
                 model.Address,
                 branchEntity.BranchID,
+                member.MembershipTypeID,
                 model.ContactNo,
                 model.Email
             );
