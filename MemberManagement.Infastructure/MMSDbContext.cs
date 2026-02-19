@@ -13,6 +13,7 @@ namespace MemberManagement.Infrastructure
         // DbSets
         public DbSet<Member> Members { get; set; }
         public DbSet<Branch> Branches { get; set; } // Add Branch table
+        public DbSet<MembershipType> MembershipTypes { get; set; } // Add Branch table
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

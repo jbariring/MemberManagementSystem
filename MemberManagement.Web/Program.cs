@@ -29,6 +29,8 @@ namespace MemberManagement.Web
             builder.Services.AddScoped<IBranchRepository, BranchRepository>();
             builder.Services.AddScoped<IBranchService, BranchService>();
 
+            builder.Services.AddScoped<IMembershipTypeRepository, MembershipTypeRepository>();
+            builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 
             var app = builder.Build();
 
