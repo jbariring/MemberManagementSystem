@@ -22,12 +22,14 @@ namespace MemberManagement.Web.ViewModels.Member
 
         [Required(ErrorMessage = "Please select a branch")]
         public int? BranchID { get; set; }  // <-- important for dropdown
+        public SelectList Branches { get; set; }
+
         [Required(ErrorMessage = "Please select a MembershipType")]
         public int? MembershipTypeID { get; set; }  // <-- important for dropdown
+        public SelectList MembershipTypes { get; set; }
 
         public string? ContactNo { get; set; }
         public string? Email { get; set; }
 
-        public List<SelectListItem> Branches { get; set; } = new List<SelectListItem>();
     }
 }

@@ -11,6 +11,9 @@ namespace MemberManagement.Web.ViewModels
         public string? Branch { get; set; }
         public SelectList Branches { get; set; }
 
+        public int? MembershipType { get; set; }
+        public SelectList MembershipTypes { get; set; }
+
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public int TotalPages { get; set; }

@@ -1,0 +1,13 @@
+﻿@model MemberManagement.Web.ViewModels.MembershipTypeViewModel
+
+<h2>Membership Type Details</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Name</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+
+    <dt class="col-sm-3">Active</dt>
+    <dd class="col-sm-9">@(Model.IsActive ? "Yes" : "No")</dd>
+</dl>
+
+<a asp-action="Index" class="btn btn-secondary">Back</a>

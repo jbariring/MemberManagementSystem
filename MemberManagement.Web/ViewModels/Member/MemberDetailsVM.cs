@@ -10,7 +10,6 @@ namespace MemberManagement.Web.ViewModels.Member
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? BirthDate { get; set; }
-
         public string? Address { get; set; }
         public string? Branch { get; set; }
         public string? MembershipType { get; set; }

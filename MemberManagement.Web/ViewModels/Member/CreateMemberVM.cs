@@ -19,6 +19,7 @@ namespace MemberManagement.Web.ViewModels.Member
         public int MembershipTypeID { get; set; }  // <--- must exist
         // For dropdown
         public IEnumerable<SelectListItem> Branches { get; set; } = new List<SelectListItem>();
+        public IEnumerable<SelectListItem> MembershipTypes { get; set; } = new List<SelectListItem>();
 
         [Phone]
         public string? ContactNo { get; set; }

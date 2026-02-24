@@ -46,17 +46,24 @@
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
 
+            <!-- Branch -->
             <div class="form-group select-wrapper">
                 <i class="fa fa-building"></i>
-                <select asp-for="BranchID" asp-items="Model.Branches" class="form-control" placeholder=" ">
-                    @* Placeholder shown only if no branch is selected *@
-                    @if (Model.BranchID == 0)
-                    {
-                        <option value="">-- Select Branch --</option>
-                    }
+                <select asp-for="BranchID" asp-items="Model.Branches">
+                    <option value="">Select Branch</option>
                 </select>
-                <label asp-for="BranchID">Branch</label>
+                <label asp-for="BranchID"></label>
                 <span asp-validation-for="BranchID" class="text-danger"></span>
+            </div>
+
+            <!-- Membership Type -->
+            <div class="form-group select-wrapper">
+                <i class="fa fa-id-card"></i>
+                <select asp-for="MembershipTypeID" asp-items="Model.MembershipTypes">
+                    <option value="">Select Membership Type</option>
+                </select>
+                <label asp-for="MembershipTypeID"></label>
+                <span asp-validation-for="MembershipTypeID" class="text-danger"></span>
             </div>
 
             <div class="form-group">

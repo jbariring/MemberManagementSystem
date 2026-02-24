@@ -1,0 +1,21 @@
+﻿@model MemberManagement.Web.ViewModels.MembershipTypeViewModel
+
+<h2>Delete Membership Type</h2>
+
+<div class="alert alert-warning">
+    Are you sure you want to delete this membership type?
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Name</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+
+    <dt class="col-sm-3">Active</dt>
+    <dd class="col-sm-9">@(Model.IsActive ? "Yes" : "No")</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="MembershipTypeID" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

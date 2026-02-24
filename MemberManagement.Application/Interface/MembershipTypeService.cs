@@ -1,91 +1,60 @@
-﻿using MemberManagement.Domain.Entities;
+﻿using MemberManagement.Application.Services;
+using MemberManagement.Domain.Entities;
 using MemberManagement.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MemberManagement.Application.Interface
+public class MembershipTypeService : IMembershipTypeService
 {
-    public class MembershipTypeService
+    private readonly IMembershipTypeRepository _repository;
+
+    public MembershipTypeService(IMembershipTypeRepository repository)
     {
-        private readonly IMembershipTypeRepository _repository;
+        _repository = repository;
+    }
 
-        public MembershipTypeService(IMembershipTypeRepository repository)
+    public async Task<List<MembershipTypeDto>> GetAllAsync()
+    {
+        var types = await _repository.GetAllAsync();
+        return types.Select(mt => new MembershipTypeDto
         {
-            _repository = repository;
-        }
+            MembershipTypeID = mt.MembershipTypeID,
+            Name = mt.Name,
+            IsActive = mt.IsActive
+        }).ToList();
+    }
 
-        // Create
-        public async Task<MembershipTypeDto> CreateAsync(CreateMembershipTypeDto dto)
+    public async Task<MembershipTypeDto?> GetByIdAsync(int id)
+    {
+        var mt = await _repository.GetByIdAsync(id);
+        if (mt == null) return null;
+        return new MembershipTypeDto
         {
-            var entity = new MembershipType(dto.Name);
-            await _repository.AddAsync(entity);
-            await _repository.SaveChangesAsync();
+            MembershipTypeID = mt.MembershipTypeID,
+            Name = mt.Name,
+            IsActive = mt.IsActive
+        };
+    }
 
-            return new MembershipTypeDto
-            {
-                MembershipTypeID = entity.MembershipTypeID,
-                Name = entity.Name,
-                IsActive = entity.IsActive
-            };
-        }
+    public async Task CreateAsync(CreateMembershipTypeDto dto)
+    {
+        var mt = new MembershipType(dto.Name);
+        await _repository.AddAsync(mt);
+        await _repository.SaveChangesAsync();
+    }
 
-        // Update
-        public async Task<MembershipTypeDto> UpdateAsync(UpdateMembershipTypeDto dto)
-        {
-            var entity = await _repository.GetByIdAsync(dto.MembershipTypeID);
-            if (entity == null) throw new Exception("Membership Type not found.");
+    public async Task UpdateAsync(UpdateMembershipTypeDto dto)
+    {
+        var mt = await _repository.GetByIdAsync(dto.MembershipTypeID);
+        if (mt == null) throw new KeyNotFoundException("Membership type not found.");
+        mt.UpdateDetails(dto.Name);
+        await _repository.UpdateAsync(mt);
+        await _repository.SaveChangesAsync();
+    }
 
-            entity.UpdateDetails(dto.Name);
-            await _repository.UpdateAsync(entity);
-            await _repository.SaveChangesAsync();
-
-            return new MembershipTypeDto
-            {
-                MembershipTypeID = entity.MembershipTypeID,
-                Name = entity.Name,
-                IsActive = entity.IsActive
-            };
-        }
-
-        // Deactivate
-        public async Task DeactivateAsync(int id)
-        {
-            var entity = await _repository.GetByIdAsync(id);
-            if (entity == null) throw new Exception("Membership Type not found.");
-
-            entity.Deactivate();
-            await _repository.UpdateAsync(entity);
-            await _repository.SaveChangesAsync();
-        }
-
-        // Get All
-        public async Task<List<MembershipTypeDto>> GetAllAsync()
-        {
-            var entities = await _repository.GetAllAsync();
-            return entities.Select(e => new MembershipTypeDto
-            {
-                MembershipTypeID = e.MembershipTypeID,
-                Name = e.Name,
-                IsActive = e.IsActive
-            }).ToList();
-        }
-
-        // Get by Id
-        public async Task<MembershipTypeDto> GetByIdAsync(int id)
-        {
-            var entity = await _repository.GetByIdAsync(id);
-            if (entity == null) throw new Exception("Membership Type not found.");
-
-            return new MembershipTypeDto
-            {
-                MembershipTypeID = entity.MembershipTypeID,
-                Name = entity.Name,
-                IsActive = entity.IsActive
-            };
-        }
+    public async Task DeactivateAsync(int id)
+    {
+        var mt = await _repository.GetByIdAsync(id);
+        if (mt == null) throw new KeyNotFoundException("Membership type not found.");
+        mt.Deactivate();
+        await _repository.SaveChangesAsync();
     }
 }
-
